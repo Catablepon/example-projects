@@ -1,5 +1,5 @@
 # example-projects
-Contains examples of simple apps made during frontend development and web server programming courses.
+Contains examples of simple apps made during frontend development and web server programming courses.  
 React apps have screenshot folders that showcase usage.
 
 - react movies is a simple app which pulls movie data from api and shows it. Includes trailer function.
