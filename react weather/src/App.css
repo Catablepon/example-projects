@@ -1,0 +1,78 @@
+.screen {
+    display: flex;
+    justify-content: center;
+}
+.topBar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: black;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+.weatherApp {
+    color: white;
+    padding-left: 10px;
+}
+.buttons {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+}
+.weatherCard {
+    width: 500px;
+    border: 1px solid grey;
+    border-radius: 10px;
+    padding-bottom: 10px;
+}
+.iconAndDesc {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.weatherInfo {
+    display: flex;
+    gap: 25px;
+}
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.button {
+    width: min-content;
+    text-wrap: nowrap ;
+    border-radius: 5px;
+}
+.search {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+.input {
+    border-radius: 5px;
+}
+.status {
+    justify-self: center;
+}
+.favourites {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: center;
+}
+.favouriteHeader {
+    justify-self: center;
+}
+.bold {
+    font-weight: 900;
+}

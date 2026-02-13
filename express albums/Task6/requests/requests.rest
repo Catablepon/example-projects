@@ -1,0 +1,117 @@
+@hostname = 127.0.0.1 
+@port = {{$dotenv PORT}}
+@host = {{hostname}}:{{port}}
+@AlbumID = {{createAlbum.response.body.data._id}}
+
+### Create
+# @name createAlbum
+POST http://{{host}}/albums/
+Content-Type: application/json
+
+{
+    "artist": "Toto",
+    "title": "Toto IV",
+    "year": 1982,
+    "genre": "Pop",
+    "tracks": 10
+}
+
+### Create
+# @name createAlbum
+POST http://{{host}}/albums/
+Content-Type: application/json
+
+{
+    "artist": "Steely Dan",
+    "title": "Aja",
+    "year": 1977,
+    "genre": "Jazz Rock",
+    "tracks": 7
+}
+
+### Create
+# @name createAlbum
+POST http://{{host}}/albums/
+Content-Type: application/json
+
+{
+    "artist": "Miles Davis",
+    "title": "Kind of Blue",
+    "year": 1959,
+    "genre": "Jazz",
+    "tracks": 5
+}
+
+### Create
+# @name createAlbum
+POST http://{{host}}/albums/
+Content-Type: application/json
+
+{
+    "artist": "Bob Dylan",
+    "title": "Blood on the Tracks",
+    "year": 1975,
+    "genre": "Folk Rock",
+    "tracks": 10
+}
+
+### Create faulty fields
+# @name createAlbum
+POST http://{{host}}/albums/
+Content-Type: application/json
+
+{
+    "artist": "qq",
+    "title": "22",
+    "year": 1890,
+    "genre": "Rock",
+    "tracks": 101
+}
+
+### Get All
+GET http://{{host}}/albums
+
+### Get a decade
+GET http://{{host}}/albums?decade=80s
+
+### Get single
+GET http://{{host}}/albums/{{AlbumID}}
+
+### Modify
+PUT http://{{host}}/albums/{{AlbumID}}
+Content-Type: application/json
+
+{
+    "artist": "test",
+    "title": "test",
+    "year": 1111,
+    "genre": "test",
+    "tracks": 11
+}
+
+### Delete (won't work without query string "login=johndoe")
+DELETE http://{{host}}/albums/{{AlbumID}}
+
+### Delete with user information
+DELETE http://{{host}}/albums/{{AlbumID}}?login=johndoe
+
+
+
+### Sort 
+GET http://{{host}}/query?sort=year,-tracks
+
+### Numeric filtering
+GET http://{{host}}/query?numericFilters=year<=1975
+
+### Selecting fields
+GET http://{{host}}/query?numericFilters=year<=1975&fields=title,tracks
+
+
+### Search either artist or title
+GET http://{{host}}/query?search=Bob
+
+### Custom filter between 2 query years
+GET http://{{host}}/query?startYear=1970&endYear=1980
+
+### Pagination
+GET http://{{host}}/query?fields=title,tracks&limit=2
