@@ -1,0 +1,35 @@
+.itemdesc {
+    display: flex;
+    flex-direction: row;
+    justify-self: center;
+    align-items: center;
+    width: auto;
+    border: 1px grey solid;
+    margin-top: 20px;
+    border-radius: 5px;
+}
+.image {
+    margin-left: 25px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.text {
+    padding-left: 50px;
+    width: 400px
+}
+.description {
+    width: 40%
+}
+
+.price {
+    font-weight: bolder;
+}
+
+.backbutton {
+    color: #0070f3;
+    text-decoration: none;
+    align-self: baseline;
+    padding-top: 25px;
+    padding-right: 10px;
+}
