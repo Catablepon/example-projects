@@ -1,4 +1,4 @@
-# example-projects
+# example apps and projects
 Contains examples of simple apps made during frontend development and web server programming courses.  
 React apps have screenshot folders that showcase usage.
 
