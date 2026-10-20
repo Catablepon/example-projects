@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose'
+import User from './User.js'
 
 const albumSchema = new Schema({
     artist: {
@@ -32,6 +33,7 @@ const albumSchema = new Schema({
         max: [100, "Max allowed tracks is 100"]
     }
 })
+
 
 albumSchema.virtual('fullTitle').get(function() {
     return this.artist + ' - ' + this.title + ' - ' + this.year

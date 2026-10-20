@@ -115,3 +115,176 @@ GET http://{{host}}/query?startYear=1970&endYear=1980
 
 ### Pagination
 GET http://{{host}}/query?fields=title,tracks&limit=2
+
+
+### USERS STUFF
+
+@port={{$dotenv PORT}}
+@host=http://localhost
+@hostname={{host}}:{{port}}
+@id_user = {{create_user.response.body.$.user._id}}
+@token_user = {{login.response.body.$.token}}
+@id_album = {{create_album.response.body.$.data._id}}
+
+
+### Get all users
+GET {{hostname}}/users
+
+### Create (register) a new REGULAR user
+# and assign id of created user to variable for later use
+# @name create_user
+POST {{hostname}}/users/register
+Content-Type: application/json
+
+{
+    "username": "eemeli",
+    "email": "testi@gmail.com",
+    "password": "eemeli",
+    "passwordConfirmation": "eemeli"
+}
+
+### Create user (should fail)
+# @name create_user
+POST {{hostname}}/users/register
+Content-Type: application/json
+
+{
+    "username": "eemeli",
+    "email": "testi@gmail.com",
+    "password": "eemeli",
+    "passwordConfirmation": "eemeli"
+}
+
+### Create user (should fail)
+# @name create_user
+POST {{hostname}}/users/register
+Content-Type: application/json
+
+{
+    "username": "asd",
+    "email": "testi@gmail.com",
+    "password": "eemeli",
+    "passwordConfirmation": "eemeli"
+}
+
+### Get user by id
+GET {{hostname}}/users/{{id_user}}
+
+### Login and get token, assign token to a variable for later use
+# @name login
+POST {{hostname}}/login
+Content-Type: application/json
+
+{
+    "username" : "eemeli",
+    "password": "eemeli"
+}
+
+### Get all albums
+GET {{hostname}}/albums/
+
+### Create new vehicle for the user
+# and assign id of created vehicle to a variable for later use
+# @name create_album
+POST {{hostname}}/albums/
+Content-Type: application/json
+Authorization: Bearer {{token_user}}
+
+{
+    "artist": "Toto",
+    "title": "Toto IV",
+    "year": 1981,
+    "genre": "Pop",
+    "tracks": 10
+}
+
+### Update album
+PUT {{hostname}}/albums/{{id_album}}
+Content-Type: application/json
+Authorization: Bearer {{token_user}}
+
+{
+    "year": 1982
+}
+
+### Delete album
+DELETE {{hostname}}/albums/{{id_album}}
+Authorization: Bearer {{token_user}}
+
+### Testing making new album without signing in or having authorization
+# @name create_album
+POST {{hostname}}/albums/
+Content-Type: application/json
+
+{
+    "artist": "Toto",
+    "title": "Toto IV",
+    "year": 1981,
+    "genre": "Pop",
+    "tracks": 10
+}
+
+### public /getAllAlbums that requires no auth
+GET {{hostname}}/albums/getAllAlbums
+
+
+################# TASK 2b
+
+### Register
+# @name register
+POST {{hostname}}/users/register
+Content-Type: application/json
+
+{
+    "username": "eemeli",
+    "email": "eemeli@eemeli.com",
+    "password": "eemeli",
+    "passwordConfirmation": "eemeli"
+}
+
+### Login — gives access token
+# @name login
+POST {{hostname}}/auth/login
+Content-Type: application/json
+
+{
+    "username": "eemeli",
+    "password": "eemeli"
+}
+
+### logintoken from response
+@loginToken = {{login.response.body.$.accessToken}}
+
+### Create album (requires valid access token)
+POST {{hostname}}/albums/
+Content-Type: application/json
+Authorization: Bearer {{loginToken}}
+
+{
+    "artist": "xxx2",
+    "title": "xxx",
+    "year": 1982,
+    "genre": "Pop",
+    "tracks": 10
+}
+
+### Refresh — gives new accesstoken if expired or need to refresh time
+# @name refresh
+POST {{hostname}}/auth/refresh
+
+### new token from response
+@refreshedToken = {{refresh.response.body.$.accessToken}}
+
+### Protected route with token
+GET {{hostname}}/albums/getAllAlbums
+Authorization: Bearer {{refreshedToken}}
+
+### Logout — clears jwt cookie and refresh cookie from database
+POST {{hostname}}/auth/logout
+
+### trying refresh after logout
+POST {{hostname}}/auth/refresh
+
+### Protected route without token/logged out
+GET {{hostname}}/albums/
+Authorization: Bearer {{refreshedToken}}

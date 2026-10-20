@@ -1,13 +1,28 @@
-const login = (req, res, next) => {
-    console.log(req.query)
+import jwt from 'jsonwebtoken'
+import { UnauthenticatedError } from '../errors/index.js'
 
-    const { login } = req.query
-    if (login === "johndoe") {
-        console.log("login OK")
+const authUser = async (req, _res, next) => {
+    //console.log("Auth header:", req.headers.authorization)
+    const authHeader = req.headers.authorization
+    if(!authHeader || !authHeader.startsWith('Bearer')) {
+        throw new UnauthenticatedError('No token in header')
+    }
+    const token = authHeader.split(' ')[1]
+
+    try {
+        const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
+        const { id, username } = decoded
+        req.user = { id, username }
         next()
-    } else {
-        next(new Error("Unauthorized"))
+    } catch (error) {
+        if (error instanceof jwt.TokenExpiredError) {
+        throw new UnauthenticatedError('Login expired')
+        } else if (error instanceof jwt.JsonWebTokenError) {
+        throw new UnauthenticatedError('Invalid token')
+        } else if (error instanceof jwt.NotBeforeError) {
+        throw new UnauthenticatedError('Token not yet valid')
+        }
+        throw error
     }
 }
-
-export default login
+export default authUser
